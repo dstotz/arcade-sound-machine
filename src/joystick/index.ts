@@ -2,13 +2,23 @@ import { HID } from "node-hid";
 import parseBuffer from "./bufferParser";
 import { joystickDeviceDetails } from "./findDevice";
 
+export interface DeviceDetails {
+  name?: string;
+  nameRegex?: RegExp;
+}
+
 export interface ButtonMapping {
   [key: string]: {
-    bufferIndex: number; // The index of the buffer to check
-    val?: number;
-    soundEffect?: string; // path to sound effect
-    say?: string; // text to say
+    bufferIndex: number;
+    bufferValue?: number;
+    soundEffect?: string;
+    say?: string;
   };
+}
+
+export interface Mapping {
+  device: DeviceDetails;
+  buttonMapping?: ButtonMapping;
 }
 
 export interface JoystickEvent {
@@ -17,18 +27,23 @@ export interface JoystickEvent {
 }
 
 export interface JoystickOptions {
-  buttonMapping: ButtonMapping;
+  mapping: Mapping;
+  onReady?: () => void;
   onEvent?: (event: JoystickEvent) => void;
+  debug?: boolean;
 }
 
 const joystick = (options: JoystickOptions) => {
-  const { buttonMapping, onEvent } = options;
-  const { vendorId, productId } = joystickDeviceDetails!;
+  const { mapping, onEvent, onReady, debug } = options;
+  const { vendorId, productId } = joystickDeviceDetails(mapping!.device);
   const device = new HID(vendorId, productId);
   let lastEvent: string;
 
   device.on("data", (buffer) => {
-    const event = parseBuffer(buffer, buttonMapping);
+    const event = parseBuffer(buffer, mapping?.buttonMapping);
+    if (debug) {
+      console.log({ bufferArray: [...buffer], event });
+    }
 
     // Ignore duplicate events such as holding a button down
     if (event && JSON.stringify(event) !== lastEvent) {
@@ -39,6 +54,10 @@ const joystick = (options: JoystickOptions) => {
 
     lastEvent = JSON.stringify(event);
   });
+
+  if (onReady) {
+    onReady();
+  }
 };
 
 export default joystick;

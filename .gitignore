@@ -124,3 +124,20 @@ out
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# yaml files excluding examples
+*.yml
+*.yaml
+!examples/*.yml
+
+# Sound files
+*.mp3
+*.m4a
+*.wav
+*.ogg
+*.aiff
+.DS_Store
+!examples/sounds/*.wav
+
+# Sound machine configs
+config/

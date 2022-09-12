@@ -1,0 +1,60 @@
+device:
+  name: Joystick
+
+buttonMapping:
+  up:
+    bufferIndex: 1
+    bufferValue: 0
+    soundEffect: "examples/sounds/up.wav"
+  down:
+    bufferIndex: 1
+    bufferValue: 255
+    soundEffect: "examples/sounds/down.wav"
+  left:
+    bufferIndex: 0
+    bufferValue: 0
+    soundEffect: "examples/sounds/left.wav"
+  right:
+    bufferIndex: 0
+    bufferValue: 255
+    soundEffect: "examples/sounds/right.wav"
+  button1:
+    bufferIndex: 5
+    bufferValue: 47
+    soundEffect: "examples/sounds/button1.wav"
+  button2:
+    bufferIndex: 5
+    bufferValue: 31
+    soundEffect: "examples/sounds/button2.wav"
+  button3:
+    bufferIndex: 5
+    bufferValue: 143
+    soundEffect: "examples/sounds/button3.wav"
+  button4:
+    bufferIndex: 5
+    bufferValue: 79
+    soundEffect: "examples/sounds/button4.wav"
+  button5:
+    bufferIndex: 6
+    bufferValue: 2
+    soundEffect: "examples/sounds/button5.wav"
+  button6:
+    bufferIndex: 6
+    bufferValue: 1
+    soundEffect: "examples/sounds/button6.wav"
+  button7:
+    bufferIndex: 6
+    bufferValue: 8
+    soundEffect: "examples/sounds/button7.wav"
+  button8:
+    bufferIndex: 6
+    bufferValue: 4
+    soundEffect: "examples/sounds/button8.wav"
+  start:
+    bufferIndex: 6
+    bufferValue: 32
+    soundEffect: "examples/sounds/start.wav"
+  coin:
+    bufferIndex: 6
+    bufferValue: 16
+    soundEffect: "examples/sounds/coin.wav"

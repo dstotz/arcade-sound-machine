@@ -1,13 +1,19 @@
-import { devices } from "node-hid";
+import { Device, devices } from "node-hid";
+import { DeviceDetails } from ".";
 
-export const joystickDeviceDetails = devices().find(
-  (device) =>
-    device.product?.trim() === "Generic   USB  Joystick" ||
-    (device.vendorId === 121 && device.product?.includes("Joystick"))
-);
+export const joystickDeviceDetails = (target: DeviceDetails): Device => {
+  if (target.name && !target.nameRegex) {
+    target.nameRegex = new RegExp(target.name, "i");
+  }
 
-if (joystickDeviceDetails) {
-  console.log("Found joystick device", joystickDeviceDetails.product);
-} else {
-  throw new Error("No joystick found");
-}
+  const device = devices().find((device) =>
+    device.product?.match(target.nameRegex!)
+  );
+
+  if (device) {
+    console.log("Device found", device);
+    return device;
+  } else {
+    throw new Error("No matching device found");
+  }
+};

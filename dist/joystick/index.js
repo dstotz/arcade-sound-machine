@@ -7,12 +7,15 @@ const node_hid_1 = require("node-hid");
 const bufferParser_1 = __importDefault(require("./bufferParser"));
 const findDevice_1 = require("./findDevice");
 const joystick = (options) => {
-    const { buttonMapping, onEvent } = options;
-    const { vendorId, productId } = findDevice_1.joystickDeviceDetails;
+    const { mapping, onEvent, onReady, debug } = options;
+    const { vendorId, productId } = (0, findDevice_1.joystickDeviceDetails)(mapping.device);
     const device = new node_hid_1.HID(vendorId, productId);
     let lastEvent;
     device.on("data", (buffer) => {
-        const event = (0, bufferParser_1.default)(buffer, buttonMapping);
+        const event = (0, bufferParser_1.default)(buffer, mapping === null || mapping === void 0 ? void 0 : mapping.buttonMapping);
+        if (debug) {
+            console.log({ bufferArray: [...buffer], event });
+        }
         // Ignore duplicate events such as holding a button down
         if (event && JSON.stringify(event) !== lastEvent) {
             if (onEvent) {
@@ -21,6 +24,9 @@ const joystick = (options) => {
         }
         lastEvent = JSON.stringify(event);
     });
+    if (onReady) {
+        onReady();
+    }
 };
 exports.default = joystick;
 //# sourceMappingURL=index.js.map
